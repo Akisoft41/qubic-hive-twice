@@ -41,16 +41,16 @@ if [ "$diffTime" -lt "$maxDelay" ]; then
   algo="qubic"
   
   uptime=$(get_miner_uptime)
-  [[ $uptime -lt 60 ]] && head -n 50 $log_name > $log_head_name
+  [[ $uptime -lt 60 ]] && head -n 100 $log_name > $log_head_name
   
   cpu_count=`cat $log_head_name | grep "threads are used" | tail -n 1 | cut -d " " -f4`
   [[ $cpu_count = "" ]] && cpu_count=0
   gpu_count=`cat $log_head_name | grep "CUDA devices are used" | tail -n 1 | cut -d " " -f4`
   [[ $gpu_count = "" ]] && gpu_count=0
   
-  if [ $cpu_count -eq 0 ] && [ $gpu_count -eq 0 ]; then
+  if [ $cpu_count -eq 0 ] || [ $gpu_count -eq 0 ]; then
     echo ...
-    cat $log_name | grep -E "threads are used|CUDA devices are used" | tail -n 2 > $log_head_name
+    cat $log_name | grep -E "threads are used|CUDA devices are used" | tail -n 20 > $log_head_name
     cpu_count=`cat $log_head_name | grep "threads are used" | tail -n 1 | cut -d " " -f4`
     [[ $cpu_count = "" ]] && cpu_count=0
     gpu_count=`cat $log_head_name | grep "CUDA devices are used" | tail -n 1 | cut -d " " -f4`
@@ -104,10 +104,10 @@ if [ "$diffTime" -lt "$maxDelay" ]; then
     bus_numbers[$gpu_count]="null"
   fi
   
-  [[ $gpu_khs = "" ]] && gpu_khs=0
+  [[ $gpu_hs = "" ]] && gpu_hs=0
   [[ $gpu_found = "" ]] && gpu_found=0
   [[ $gpu_submit = "" ]] && gpu_submit=0
-  [[ $cpu_khs = "" ]] && cpu_khs=0
+  [[ $cpu_hs = "" ]] && cpu_hs=0
   [[ $cpu_found = "" ]] && cpu_found=0
   [[ $cpu_submit = "" ]] && cpu_submit=0
   

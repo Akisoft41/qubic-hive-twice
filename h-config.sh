@@ -11,7 +11,7 @@ SettingsGPU=$(jq -r .Settings <<< "$confGPU")
 
 
 [[ ! -z $CUSTOM_TEMPLATE ]] &&
-	SettingsCPU=`jq --null-input --argjson Settings "$SettingsCPU" --arg alias "$CUSTOM_TEMPLATE" '$Settings + {$alias}'` &&
+	SettingsCPU=`jq --null-input --argjson Settings "$SettingsCPU" --arg alias "${CUSTOM_TEMPLATE}-cpu" '$Settings + {$alias}'` &&
 	SettingsGPU=`jq --null-input --argjson Settings "$SettingsGPU" --arg alias "$CUSTOM_TEMPLATE" '$Settings + {$alias}'`
 
 [[ ! -z $CUSTOM_URL ]] &&

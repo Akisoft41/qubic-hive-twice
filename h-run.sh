@@ -5,15 +5,18 @@
 echo
 echo "qubic-hive-twice Copyright (C) 2023-2024 Pascal Akermann"
 echo "GPL-3.0-or-later"
+echo
 
 
 [[ ! -e ./cpu/appsettings.json ]] && echo "No CPU config file found, exiting" && exit 1
 [[ ! -e ./gpu/appsettings.json ]] && echo "No GPU config file found, exiting" && exit 1
 
 
-cd cpu/
-./qli-Client | ts CPU | tee --append $MINER_LOG_BASENAME.log &
+cd ./gpu/
+./qli-Client | ts GPU | tee --append $MINER_LOG_BASENAME.log &
 
-cd ../gpu/
-./qli-Client | ts GPU | tee --append $MINER_LOG_BASENAME.log
+sleep 5
+
+cd ../cpu/
+./qli-Client | ts CPU | tee --append $MINER_LOG_BASENAME.log
 
