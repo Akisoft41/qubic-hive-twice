@@ -23,10 +23,6 @@ get_log_time_diff(){
 #######################
 
 
-#log_name="$MINER_LOG_BASENAME.log"
-#conf_name="$CUSTOM_CONFIG_FILENAME"
-#custom_version="$CUSTOM_VERSION"
-
 log_basename="/var/log/miner/custom/custom"
 log_name="$log_basename.log"
 log_head_name="${log_basename}_head.log"
