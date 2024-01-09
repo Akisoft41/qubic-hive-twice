@@ -5,7 +5,7 @@
 
 get_miner_uptime(){
   local a=0
-  let a=`stat --format='%Y' $log_name`-`stat --format='%Y' $conf_name`
+  let a=`stat --format='%Y' $log_name`-`stat --format='%Y' $cpu_conf_name`
   echo $a
 }
 
@@ -26,7 +26,8 @@ get_log_time_diff(){
 log_basename="/var/log/miner/custom/custom"
 log_name="$log_basename.log"
 log_head_name="${log_basename}_head.log"
-custom_version=1.8.2
+cpu_conf_name="/hive/miners/custom/qubic-hive-twice/cpu/appsettings.json"
+custom_version=1.8.3
 
 
 diffTime=$(get_log_time_diff)
@@ -72,9 +73,9 @@ if [ "$diffTime" -lt "$maxDelay" ]; then
   
   if [[ $gpu_count -ge 0 ]]; then
     # GPUs
-    gpu_hs=`cat $log_name | tail -n 50 | grep "^GPU" | grep "Search" | tail -n 1 | cut -d " " -f12`
-    gpu_found=`cat $log_name | tail -n 50 | grep "^GPU" | grep "Search" | tail -n 1 | cut -d " " -f7 | cut -d "/" -f1`
-    gpu_submit=`cat $log_name | tail -n 50 | grep "^GPU" | grep "Search" | tail -n 1 | cut -d " " -f7 | cut -d "/" -f2`
+    gpu_hs=`cat $log_name | tail -n 50 | grep "^GPU" | grep "Try " | tail -n 1 | cut -d " " -f15`
+    gpu_found=`cat $log_name | tail -n 50 | grep "^GPU" | grep "Try " | tail -n 1 | cut -d " " -f6 | cut -d "/" -f1`
+    gpu_submit=`cat $log_name | tail -n 50 | grep "^GPU" | grep "Try " | tail -n 1 | cut -d " " -f6 | cut -d "/" -f2`
     gpu_temp=$(jq '.temp' <<< $gpu_stats)
     gpu_fan=$(jq '.fan' <<< $gpu_stats)
     gpu_bus=$(jq '.busids' <<< $gpu_stats)
@@ -85,7 +86,7 @@ if [ "$diffTime" -lt "$maxDelay" ]; then
   		gpu_bus=$(jq -c "del(.$cpu_indexes_array)" <<< $gpu_bus)
     fi
     for (( i=0; i < ${gpu_count}; i++ )); do
-      hs[$i]=`cat $log_name | tail -n 50 | grep "^GPU" | grep "GPU#$i" | grep "iters/sec" | tail -n 1 | cut -d ":" -f6 | cut -d " " -f2`
+      hs[$i]=`cat $log_name | tail -n 100 | grep "^GPU" | grep "GPU#$i" | grep "iters/sec" | tail -n 1 | cut -d ":" -f6 | cut -d " " -f2`
       [[ -z ${hs[$i]} ]] && hs[$i]=0
       temp[$i]=$(jq .[$i] <<< $gpu_temp)
       fan[$i]=$(jq .[$i] <<< $gpu_fan)
@@ -95,10 +96,10 @@ if [ "$diffTime" -lt "$maxDelay" ]; then
   fi
   if [[ $cpu_count -ge 0 ]]; then
     # CPU
-    cpu_hs=`cat $log_name | tail -n 50 | grep "^CPU" | grep "Search" | tail -n 1 | cut -d " " -f12`
-    cpu_found=`cat $log_name | tail -n 50 | grep "^CPU" | grep "Search" | tail -n 1 | cut -d " " -f7 | cut -d "/" -f1`
-    cpu_submit=`cat $log_name | tail -n 50 | grep "^CPU" | grep "Search" | tail -n 1 | cut -d " " -f7 | cut -d "/" -f2`
-    hs[$gpu_count]=`cat $log_name | tail -n 50 | grep "^CPU" | grep "Search" | tail -n 1 | cut -d " " -f9`
+    cpu_hs=`cat $log_name | tail -n 50 | grep "^CPU" | grep "Try " | tail -n 1 | cut -d " " -f15`
+    cpu_found=`cat $log_name | tail -n 50 | grep "^CPU" | grep "Try " | tail -n 1 | cut -d " " -f6 | cut -d "/" -f1`
+    cpu_submit=`cat $log_name | tail -n 50 | grep "^CPU" | grep "Try " | tail -n 1 | cut -d " " -f6 | cut -d "/" -f2`
+    hs[$gpu_count]=`cat $log_name | tail -n 50 | grep "^CPU" | grep "Try " | tail -n 1 | cut -d " " -f15`
     temp[$gpu_count]=$cpu_temp
     fan[$gpu_count]=""
     bus_numbers[$gpu_count]="null"
@@ -113,7 +114,7 @@ if [ "$diffTime" -lt "$maxDelay" ]; then
   
   let khs=$gpu_hs+$cpu_hs
   let ac=$gpu_found+$cpu_found
-  let rj=$ac-$gpu_submit-$cpu_submit
+  let rj=($gpu_submit+$cpu_submit)-$ac
 
   khs=`echo $khs | awk '{print $1/1000}'`
 
