@@ -47,4 +47,4 @@ echo $confGPU | jq . > /hive/miners/custom/$CUSTOM_NAME/gpu/appsettings.json
 
 
 # le script h-run.sh a besoin du programme "ts" qui fait partie du package Ubuntu "moreutils"
-apt install moreutils
+apt install moreutils -y
