@@ -55,7 +55,7 @@ Ne pas modifier ce champ, il est rempli automatiquement avec l'installation URL.
 
 ### Installation URL
 
-`https://github.com/Akisoft41/qubic-hive-twice/releases/download/v1.8.3/qubic-hive-twice-1.8.3.tar.gz`
+`https://github.com/Akisoft41/qubic-hive-twice/releases/download/v1.8.3_02/qubic-hive-twice-1.8.3_02.tar.gz`
 
 ### Hash algorithm:
 
@@ -81,11 +81,13 @@ Pas utilisé.
 
 Chaque ligne (sprarées par un `CR`) est fusionnée dans `appsettings.json`
 
-Pour les OC **GPU**, on peut mettre directement une ligne pour la commande `nvtool`
+- Pour les OC, on peut mettre directement une ligne pour la commande `nvtool`
 
-Pour le minage **CPU**, il faut ajouter une ligne `"amountOfThreads": n` (remplacer *n* par le nombre de threads)
+- Ajouter une ligne `"amountOfThreads": n` (remplacer *n* par le nombre de threads)
 
-Il faut mettre une ligne `"payoutId": "_ton_payout_id_"` ou `"accessToken": "_ton_access_token_"`
+- Il faut une des lignes
+  - `"payoutId": "_ton_payout_id_"` ou 
+  - `"accessToken": "_ton_access_token_"`
 
 
 
@@ -97,11 +99,38 @@ Voici ma Flight Sheet pour utiliser aussi la pool publique:
 
 ### Extra config arguments:
 
-Il est possible de mettre un commentaire en commençant la ligne par un `#`.
+- Il est possible de mettre un commentaire en commençant la ligne par un `#`.
 
-Pour appliquer une ligne que pour un miner, il faut commencer la ligne par `cpu:` ou `gpu:`.
+- Pour appliquer une ligne que pour un miner, il faut commencer la ligne par `cpu:` ou `gpu:`.
 
 Dans mon exemple, j'utilise un `accessToken` pour le minage GPU, et un `payoutId` pour le minage CPU sur la pool publique.
+
+
+## Configuration par défaut
+
+### CPU
+```
+  "Settings": {
+    "baseUrl": "https://mine.qubic.li/",
+    "amountOfThreads": 1,
+    "payoutId": null,
+    "accessToken": null,
+    "alias": "qubic.li Client-cpu",
+    "allowHwInfoCollect": false
+  }
+```
+
+### GPU
+```
+  "Settings": {
+    "baseUrl": "https://mine.qubic.li/",
+    "payoutId": null,
+    "accessToken": null,
+    "alias": "qubic.li Client",
+    "allowHwInfoCollect": true,
+    "overwrites": {"CUDA": "12"}
+  }
+```
 
 
 ## Que contient l'archive tar.gz ?
@@ -110,8 +139,8 @@ Dans cette archive, j'ai développé 3 script bash : h-config.sh, h-run.sh et h-
 
 Il y a aussi le programme officiel de Qubic : qli-Client
 
+______________
 
 Ce projet est Open Source sous licence GPL-3.0-or-later
 
 Copyright (C) 2024 Pascal Akermann
-

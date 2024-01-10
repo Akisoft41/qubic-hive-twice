@@ -85,14 +85,22 @@ if [ "$diffTime" -lt "$maxDelay" ]; then
   		gpu_fan=$(jq -c "del(.$cpu_indexes_array)" <<< $gpu_fan) &&
   		gpu_bus=$(jq -c "del(.$cpu_indexes_array)" <<< $gpu_bus)
     fi
+    let gpu_hs_tot=0
     for (( i=0; i < ${gpu_count}; i++ )); do
       hs[$i]=`cat $log_name | tail -n 100 | grep "^GPU" | grep "GPU#$i" | grep "iters/sec" | tail -n 1 | cut -d ":" -f6 | cut -d " " -f2`
       [[ -z ${hs[$i]} ]] && hs[$i]=0
+      let gpu_hs_tot=$gpu_hs_tot+${hs[$i]}
       temp[$i]=$(jq .[$i] <<< $gpu_temp)
       fan[$i]=$(jq .[$i] <<< $gpu_fan)
       busid=$(jq .[$i] <<< $gpu_bus)
       bus_numbers[$i]=`echo $busid | cut -d ":" -f1 | cut -c2- | awk -F: '{ printf "%d\n",("0x"$1) }'`
     done
+    if [[ $gpu_hs_tot -eq 0 ]]; then
+      # si on a pas le hs par gpu, prend la moyenne
+      for (( i=0; i < ${gpu_count}; i++ )); do
+        hs[$i]=`printf "%.1f\n" $((10 * $gpu_hs / $gpu_count))e-1`
+      done
+    fi
   fi
   if [[ $cpu_count -ge 0 ]]; then
     # CPU
