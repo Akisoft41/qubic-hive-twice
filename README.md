@@ -13,36 +13,12 @@ miner : https://github.com/qubic-li/client?tab=readme-ov-file#download
 
 ## Préparation HiveOS
 
-Pour pouvoir exécuter le miner Quibic dans HiveOS, il faut faire une mise à jour partielle de Ubuntu 18 vers Ubuntu 22.
-
-Procédure que j'utilise:
+Pour pouvoir exécuter le miner Quibic, il faut la version beta de HiveOS.
 
 ```
-Flight sheet Unset
-
 hive-replace --list
 2   ## beta ##
-
-selfupgrade
-
-apt update
-apt upgrade
-
-echo "deb http://cz.archive.ubuntu.com/ubuntu jammy main" >> /etc/apt/sources.list
-apt update
-
-apt install libc6
-## lors d'une question, accepter la valeur proposée ##
-
-nano /etc/apt/sources.list
-## supprimer la dernière ligne (ligne avec jammy)
-
-apt update
-
-reboot
 ```
-
-Si vous n'utilisez plus le miner Quibic, il est conseillé de remettre une version officielle de HiveOS (de refaire un hive-replace).
 
 
 ## Flight Sheet
