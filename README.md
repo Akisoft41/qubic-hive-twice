@@ -20,6 +20,12 @@ hive-replace --list
 2   ## beta ##
 ```
 
+Pour améliorer (up peut) le minage avec le CPU, il faut définir des *huge pages* :
+```
+/usr/sbin/sysctl -w vm.nr_hugepages=832
+```
+Le nombre dépand du nombre de trheds: nb_threads * 52 (exemple 16 * 52 = 832).
+
 
 ## Flight Sheet
 
@@ -37,7 +43,7 @@ Ne pas modifier ce champ, il est rempli automatiquement avec l'installation URL.
 
 ### Installation URL
 
-`https://github.com/Akisoft41/qubic-hive-twice/releases/download/v1.8.8_beta/qubic-hive-twice-1.8.8_beta.tar.gz`
+`https://github.com/Akisoft41/qubic-hive-twice/releases/download/v1.8.9/qubic-hive-twice-1.8.9.tar.gz`
 
 ### Hash algorithm:
 
