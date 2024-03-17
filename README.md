@@ -20,11 +20,11 @@ hive-replace --list
 2   ## beta ##
 ```
 
-Pour améliorer (up peut) le minage avec le CPU, il faut définir des *huge pages* :
+Pour améliorer (un peut) le minage avec le CPU, il faut définir des *huge pages* :
 ```
 /usr/sbin/sysctl -w vm.nr_hugepages=832
 ```
-Le nombre dépand du nombre de trheds: nb_threads * 52 (exemple 16 * 52 = 832).
+Le nombre dépend du nombre de trheds: nb_threads * 52 (exemple 16 * 52 = 832).
 
 
 ## Flight Sheet
