@@ -20,6 +20,9 @@ hive-replace --list
 2   ## beta ##
 ```
 
+ATTENTION : si vous avez mis à jour la version de LibC, il faut impérativement réinstaller HiveOS beta !!!
+
+
 Pour améliorer (un peut) le minage avec le CPU, il faut définir des *huge pages* :
 ```
 /usr/sbin/sysctl -w vm.nr_hugepages=832
@@ -53,7 +56,7 @@ Ce champ n'est pas utilisé, on peut laisser `----`
 
 Nom du worker. Valeur de `"alias"` dans appsettings.json
 
-pour le minage CPU, le préfixe `-cpu` est ajouté au nom du worker.
+pour le minage CPU, le suffixe `-cpu` est ajouté au nom du worker.
 
 ### Pool URL:
 
