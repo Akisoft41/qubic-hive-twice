@@ -20,7 +20,6 @@ hive-replace --list
 2   ## beta ##
 ```
 
-ATTENTION : si vous avez mis à jour la version de LibC, il faut impérativement réinstaller HiveOS beta !!!
 
 
 Pour améliorer (un peut) le minage avec le CPU, il faut définir des *huge pages* :
